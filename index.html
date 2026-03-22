@@ -6,9 +6,31 @@
     <title>Fruit Tetris</title>
   </head>
   <body>
-    <div id="root" style="background-color: #0a0a0a; color: white; display: flex; align-items: center; justify-center; min-height: 100vh; font-family: sans-serif;">
-      Loading Fruit Tetris...
+    <div id="root" style="background-color: #0a0a0a; color: white; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: sans-serif; text-align: center; padding: 20px;">
+      <div id="loading-status">Loading Fruit Tetris...</div>
+      <div id="error-display" style="color: #ff4444; margin-top: 20px; display: none; font-family: monospace; white-space: pre-wrap; text-align: left; max-width: 80vw; overflow: auto;"></div>
     </div>
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        const display = document.getElementById('error-display');
+        const status = document.getElementById('loading-status');
+        if (display) {
+          display.style.display = 'block';
+          display.innerHTML = 'Error: ' + message + '\nAt: ' + source + ':' + lineno + ':' + colno;
+        }
+        if (status) status.innerHTML = 'Failed to load game.';
+        return false;
+      };
+      window.addEventListener('unhandledrejection', function(event) {
+        const display = document.getElementById('error-display');
+        const status = document.getElementById('loading-status');
+        if (display) {
+          display.style.display = 'block';
+          display.innerHTML = 'Promise Rejection: ' + event.reason;
+        }
+        if (status) status.innerHTML = 'Failed to load game.';
+      });
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
